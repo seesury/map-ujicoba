@@ -1,0 +1,893 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/L.Control.Layers.Tree.min.js"></script>
+        <script src="js/multi-style-layer.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/KAB_TANGERANGFIXED_1.js"></script>
+        <script src="data/JALAN_2.js"></script>
+        <script src="data/TITIKKECAMATAN_3.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:false, maxZoom:28, minZoom:1
+        }).fitBounds([[-6.401607893593421,106.28311115025305],[-6.107770289526972,106.85424297158653]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        // remove popup's row if "visible-with-data"
+        function removeEmptyRowsFromPopupContent(content, feature) {
+         var tempDiv = document.createElement('div');
+         tempDiv.innerHTML = content;
+         var rows = tempDiv.querySelectorAll('tr');
+         for (var i = 0; i < rows.length; i++) {
+             var td = rows[i].querySelector('td.visible-with-data');
+             var key = td ? td.id : '';
+             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                 rows[i].parentNode.removeChild(rows[i]);
+             }
+         }
+         return tempDiv.innerHTML;
+        }
+        // add class to format popup if it contains media
+		function addClassToPopupIfMedia(content, popup) {
+			var tempDiv = document.createElement('div');
+			tempDiv.innerHTML = content;
+			if (tempDiv.querySelector('td img')) {
+				popup._contentNode.classList.add('media');
+					// Delay to force the redraw
+					setTimeout(function() {
+						popup.update();
+					}, 10);
+			} else {
+				popup._contentNode.classList.remove('media');
+			}
+		}
+        var zoomControl = L.control.zoom({
+            position: 'topleft'
+        }).addTo(map);
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_PetaAdministrasiTangerang_modified_0');
+        map.getPane('pane_PetaAdministrasiTangerang_modified_0').style.zIndex = 400;
+        var img_PetaAdministrasiTangerang_modified_0 = 'data/PetaAdministrasiTangerang_modified_0.png';
+        var img_bounds_PetaAdministrasiTangerang_modified_0 = [[-6.402780970095661,106.30932531102985],[-5.973011767939575,106.91743151069683]];
+        var layer_PetaAdministrasiTangerang_modified_0 = new L.imageOverlay(img_PetaAdministrasiTangerang_modified_0,
+                                              img_bounds_PetaAdministrasiTangerang_modified_0,
+                                              {pane: 'pane_PetaAdministrasiTangerang_modified_0'});
+        bounds_group.addLayer(layer_PetaAdministrasiTangerang_modified_0);
+        map.addLayer(layer_PetaAdministrasiTangerang_modified_0);
+        function pop_KAB_TANGERANGFIXED_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">fid</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">id</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LUAS_DAERAH</th>\
+                        <td>' + (feature.properties['LUAS_DAERAH'] !== null ? autolinker.link(feature.properties['LUAS_DAERAH'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_KAB_TANGERANGFIXED_1_0(feature) {
+            switch(String(feature.properties['LUAS_DAERAH'])) {
+                case '0.0001402578687681455':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(118,185,210,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '360.9466354707256':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(144,232,55,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '1101.7080119308084':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(82,159,218,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '11620027.145539863':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(234,95,181,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '18488454.162515663':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(232,64,48,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '18549485.996887892':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(211,105,209,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '25074377.2168698':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(181,222,98,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '25088078.71973305':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(63,93,201,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '25334592.732180655':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(230,85,36,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '26471787.13524117':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(125,163,223,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '28347162.975627553':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(162,107,217,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '28796665.03778247':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(232,148,84,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '29530933.55491157':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(228,165,70,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '30033491.016135376':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(161,31,226,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '30403168.64604528':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(192,207,107,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '30795217.806375746':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(32,201,96,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '32416208.118094344':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(61,189,201,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '32488803.473148666':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(24,208,128,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '33138727.9505974':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(235,191,15,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '33737289.22007662':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(80,57,213,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '34325905.55705901':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(205,27,237,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '36209830.69055605':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(213,50,94,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '36244453.868561454':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(207,206,122,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '39691441.10471597':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(143,147,239,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '41380915.46004154':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(62,240,30,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '43262249.297559425':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(237,70,86,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '47374358.0460702':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(157,235,121,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '47545141.173115335':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(28,205,64,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '49042162.556875505':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(42,206,47,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '49266075.529632434':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(143,117,201,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '50951160.506486684':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(62,204,166,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '53565275.926538914':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(91,235,223,1.0)',
+                interactive: true,
+            }
+                    break;
+                case '55990790.84723085':
+                    return {
+                pane: 'pane_KAB_TANGERANGFIXED_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(234,109,209,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_KAB_TANGERANGFIXED_1');
+        map.getPane('pane_KAB_TANGERANGFIXED_1').style.zIndex = 401;
+        map.getPane('pane_KAB_TANGERANGFIXED_1').style['mix-blend-mode'] = 'normal';
+        var layer_KAB_TANGERANGFIXED_1 = new L.geoJson(json_KAB_TANGERANGFIXED_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_KAB_TANGERANGFIXED_1',
+            layerName: 'layer_KAB_TANGERANGFIXED_1',
+            pane: 'pane_KAB_TANGERANGFIXED_1',
+            onEachFeature: pop_KAB_TANGERANGFIXED_1,
+            style: style_KAB_TANGERANGFIXED_1_0,
+        });
+        bounds_group.addLayer(layer_KAB_TANGERANGFIXED_1);
+        map.addLayer(layer_KAB_TANGERANGFIXED_1);
+        function pop_JALAN_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">id</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">NAMA_JALAN</th>\
+                        <td>' + (feature.properties['NAMA_JALAN'] !== null ? autolinker.link(feature.properties['NAMA_JALAN'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_JALAN_2_0(feature) {
+            switch(String(feature.properties['NAMA_JALAN'])) {
+                case 'Jalan Artileri Primer':
+                    return {
+                pane: 'pane_JALAN_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Jalan Kolektor Primer':
+                    return {
+                pane: 'pane_JALAN_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Jalan Tol':
+                    return {
+                pane: 'pane_JALAN_2',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        function style_JALAN_2_1(feature) {
+            switch(String(feature.properties['NAMA_JALAN'])) {
+                case 'Jalan Artileri Primer':
+                    return {
+                pane: 'pane_JALAN_2',
+                opacity: 1,
+                color: 'rgba(255,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 3.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Jalan Kolektor Primer':
+                    return {
+                pane: 'pane_JALAN_2',
+                opacity: 1,
+                color: 'rgba(230,0,255,1.0)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Jalan Tol':
+                    return {
+                pane: 'pane_JALAN_2',
+                opacity: 1,
+                color: 'rgba(255,17,17,1.0)',
+                dashArray: '',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 4.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_JALAN_2');
+        map.getPane('pane_JALAN_2').style.zIndex = 402;
+        map.getPane('pane_JALAN_2').style['mix-blend-mode'] = 'normal';
+        var layer_JALAN_2 = new L.geoJson.multiStyle(json_JALAN_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_JALAN_2',
+            layerName: 'layer_JALAN_2',
+            pane: 'pane_JALAN_2',
+            onEachFeature: pop_JALAN_2,
+            styles: [style_JALAN_2_0,style_JALAN_2_1,]
+        });
+        bounds_group.addLayer(layer_JALAN_2);
+        map.addLayer(layer_JALAN_2);
+        function pop_TITIKKECAMATAN_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">id</th>\
+                        <td>' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Kecamatan</th>\
+                        <td>' + (feature.properties['Kecamatan'] !== null ? autolinker.link(feature.properties['Kecamatan'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_TITIKKECAMATAN_3_0() {
+            return {
+                pane: 'pane_TITIKKECAMATAN_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(125,139,143,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_TITIKKECAMATAN_3');
+        map.getPane('pane_TITIKKECAMATAN_3').style.zIndex = 403;
+        map.getPane('pane_TITIKKECAMATAN_3').style['mix-blend-mode'] = 'normal';
+        var layer_TITIKKECAMATAN_3 = new L.geoJson(json_TITIKKECAMATAN_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_TITIKKECAMATAN_3',
+            layerName: 'layer_TITIKKECAMATAN_3',
+            pane: 'pane_TITIKKECAMATAN_3',
+            onEachFeature: pop_TITIKKECAMATAN_3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_TITIKKECAMATAN_3_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_TITIKKECAMATAN_3);
+        map.addLayer(layer_TITIKKECAMATAN_3);
+        var overlaysTree = [
+            {label: '<img src="legend/TITIKKECAMATAN_3.png" /> TITIK KECAMATAN', layer: layer_TITIKKECAMATAN_3},
+            {label: 'JALAN<br /><table><tr><td style="text-align: center;"><img src="legend/JALAN_2_JalanArtileriPrimer0.png" /></td><td>Jalan Artileri Primer</td></tr><tr><td style="text-align: center;"><img src="legend/JALAN_2_JalanKolektorPrimer1.png" /></td><td>Jalan Kolektor Primer</td></tr><tr><td style="text-align: center;"><img src="legend/JALAN_2_JalanTol2.png" /></td><td>Jalan Tol</td></tr></table>', layer: layer_JALAN_2},
+            {label: 'KAB_TANGERANG (FIXED)<br /><table><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_000014025786876814550.png" /></td><td>0.0001402578687681455</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_36094663547072561.png" /></td><td>360.9466354707256</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_110170801193080842.png" /></td><td>1101.7080119308084</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_116200271455398633.png" /></td><td>11620027.145539863</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_184884541625156634.png" /></td><td>18488454.162515663</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_185494859968878925.png" /></td><td>18549485.996887892</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_2507437721686986.png" /></td><td>25074377.2168698</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_25088078719733057.png" /></td><td>25088078.71973305</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_253345927321806558.png" /></td><td>25334592.732180655</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_26471787135241179.png" /></td><td>26471787.13524117</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_2834716297562755310.png" /></td><td>28347162.975627553</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_287966650377824711.png" /></td><td>28796665.03778247</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_295309335549115712.png" /></td><td>29530933.55491157</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_3003349101613537613.png" /></td><td>30033491.016135376</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_304031686460452814.png" /></td><td>30403168.64604528</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_3079521780637574615.png" /></td><td>30795217.806375746</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_3241620811809434416.png" /></td><td>32416208.118094344</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_3248880347314866617.png" /></td><td>32488803.473148666</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_33138727950597418.png" /></td><td>33138727.9505974</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_337372892200766219.png" /></td><td>33737289.22007662</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_343259055570590120.png" /></td><td>34325905.55705901</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_362098306905560521.png" /></td><td>36209830.69055605</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_3624445386856145422.png" /></td><td>36244453.868561454</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_396914411047159723.png" /></td><td>39691441.10471597</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_413809154600415424.png" /></td><td>41380915.46004154</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_4326224929755942525.png" /></td><td>43262249.297559425</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_47374358046070226.png" /></td><td>47374358.0460702</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_4754514117311533527.png" /></td><td>47545141.173115335</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_4904216255687550528.png" /></td><td>49042162.556875505</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_4926607552963243429.png" /></td><td>49266075.529632434</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_5095116050648668430.png" /></td><td>50951160.506486684</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_5356527592653891431.png" /></td><td>53565275.926538914</td></tr><tr><td style="text-align: center;"><img src="legend/KAB_TANGERANGFIXED_1_559907908472308532.png" /></td><td>55990790.84723085</td></tr></table>', layer: layer_KAB_TANGERANGFIXED_1},
+            {label: "Peta Administrasi Tangerang_modified", layer: layer_PetaAdministrasiTangerang_modified_0},]
+        var lay = L.control.layers.tree(null, overlaysTree,{
+            //namedToggle: true,
+            //selectorBack: false,
+            //closedSymbol: '&#8862; &#x1f5c0;',
+            //openedSymbol: '&#8863; &#x1f5c1;',
+            //collapseAll: 'Collapse all',
+            //expandAll: 'Expand all',
+            collapsed: false, 
+        });
+        lay.addTo(map);
+		document.addEventListener("DOMContentLoaded", function() {
+            // set new Layers List height which considers toggle icon
+            function newLayersListHeight() {
+                var layerScrollbarElement = document.querySelector('.leaflet-control-layers-scrollbar');
+                if (layerScrollbarElement) {
+                    var layersListElement = document.querySelector('.leaflet-control-layers-list');
+                    var originalHeight = layersListElement.style.height 
+                        || window.getComputedStyle(layersListElement).height;
+                    var newHeight = parseFloat(originalHeight) - 50;
+                    layersListElement.style.height = newHeight + 'px';
+                }
+            }
+            var isLayersListExpanded = true;
+            var controlLayersElement = document.querySelector('.leaflet-control-layers');
+            var toggleLayerControl = document.querySelector('.leaflet-control-layers-toggle');
+            // toggle Collapsed/Expanded and apply new Layers List height
+            toggleLayerControl.addEventListener('click', function() {
+                if (isLayersListExpanded) {
+                    controlLayersElement.classList.remove('leaflet-control-layers-expanded');
+                } else {
+                    controlLayersElement.classList.add('leaflet-control-layers-expanded');
+                }
+                isLayersListExpanded = !isLayersListExpanded;
+                newLayersListHeight()
+            });	
+			// apply new Layers List height if toggle layerstree
+			if (controlLayersElement) {
+				controlLayersElement.addEventListener('click', function(event) {
+					var toggleLayerHeaderPointer = event.target.closest('.leaflet-layerstree-header-pointer span');
+					if (toggleLayerHeaderPointer) {
+						newLayersListHeight();
+					}
+				});
+			}
+            // Collapsed/Expanded at Start to apply new height
+            setTimeout(function() {
+                toggleLayerControl.click();
+            }, 10);
+            setTimeout(function() {
+                toggleLayerControl.click();
+            }, 10);
+            // Collapsed touch/small screen
+            var isSmallScreen = window.innerWidth < 650;
+            if (isSmallScreen) {
+                setTimeout(function() {
+                    controlLayersElement.classList.remove('leaflet-control-layers-expanded');
+                    isLayersListExpanded = !isLayersListExpanded;
+                }, 500);
+            }  
+        });       
+        setBounds();
+        var i = 0;
+        layer_TITIKKECAMATAN_3.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Kecamatan'] !== null?String('<div style="color: #323232; font-size: 5pt; font-family: \'Arial\', sans-serif;">' + layer.feature.properties['Kecamatan']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_TITIKKECAMATAN_3'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        L.ImageOverlay.include({
+            getBounds: function () {
+                return this._bounds;
+            }
+        });
+        resetLabels([layer_TITIKKECAMATAN_3]);
+        map.on("zoomend", function(){
+            resetLabels([layer_TITIKKECAMATAN_3]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_TITIKKECAMATAN_3]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_TITIKKECAMATAN_3]);
+        });
+        </script>
+    </body>
+</html>
